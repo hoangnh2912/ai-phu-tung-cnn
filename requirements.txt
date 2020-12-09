@@ -1,0 +1,11 @@
+numpy
+opencv-python
+fastapi
+pydantic
+keras
+tensorflow
+torch
+torchvision
+matplotlib
+scikit-image
+Pillow

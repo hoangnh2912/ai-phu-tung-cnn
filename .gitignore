@@ -1,2 +1,4 @@
 !model_phu_tung.h5
 !saved_models/u2net/u2net.pth
+*.pth
+*.h5

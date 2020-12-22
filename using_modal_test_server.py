@@ -37,20 +37,20 @@ class_name = ['Bạc tay biên WD615 – VMVG1500030077EN5-20200919', 'VMWG9000
 def using(path, my_model, host_name, port):
     try:
         last_res = []
-        img = using_u2net(cv2.imread(path))
+        img, file_out_name = using_u2net(cv2.imread(path))
+        print(file_out_name)
         img = cv2.resize(img, shape)
         image = cv2.resize(img, dsize=shape)
-        cv2.imwrite('cache/test.jpg', image)
         predict = my_model.predict(np.array([image]))
         predict = predict[0]
         predict_index = np.argsort(predict)[::-1][:LEN_DATA_RES].tolist()
         for idx, con in enumerate(predict_index):
             name = class_name[con]
-            last_res.append({'name': name, 'consider': round(float(predict[con]), 3) * 100, 'idx': con})
+            last_res.append({'name': name, 'consider': round(float(predict[con]), 3) * 100, 'index': con})
         return {
             'data': {
                 'predict': last_res,
-                'image_url': 'http://' + host_name + ":" + str(port) + "/image?file=out.jpg"
+                'image_url': 'http://' + host_name + ":" + str(port) + "/image?file=" + file_out_name
             },
             'code': 200,
             'message': "Thành công",

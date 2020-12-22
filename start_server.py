@@ -7,14 +7,15 @@ from pydantic import BaseModel
 from starlette.responses import StreamingResponse
 from tensorflow.keras.models import load_model
 from starlette.requests import Request
-
+from time import time
 from using_modal_test_server import using
 
 my_model = load_model("model_phu_tung.h5")
 
 
 def readb64(base64_string):
-    path = 'cache/predict.jpg'
+    file_in_name = str(int(time())) + ".jpg"
+    path = 'cache/in/' + file_in_name
     with open(path, 'wb') as f_output:
         f_output.write(base64.b64decode(base64_string))
     return path
@@ -37,7 +38,7 @@ async def root(req: Request, image: BodyObjectPredict):
 
 
 @app.get("/image")
-async def get_image(file: str = 'out.jpg'):
-    cv2img = cv2.imread('cache/' + file)
+async def get_image(file: str):
+    cv2img = cv2.imread('cache/out/' + file)
     res, im_png = cv2.imencode(".png", cv2img)
     return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type="image/png")

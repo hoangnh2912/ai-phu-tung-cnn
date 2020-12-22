@@ -7,9 +7,8 @@ import torchvision.transforms.functional as TF
 from PIL import Image
 from skimage import io
 from torch.autograd import Variable
-
+from time import time
 from u2net_test import net
-
 
 model_name = 'u2net'
 path = 'test_data/test_images/cache.jpg'
@@ -49,8 +48,9 @@ def get_output(image_name, pred):
         x, y, w, h = cv2.boundingRect(con)
     mask_out = cv2.subtract(mask, image_ori)
     mask_out = cv2.subtract(mask, mask_out)
-    cv2.imwrite('cache/out.jpg', mask_out[y:y + h, x:x + w])
-    return mask_out[y:y + h, x:x + w]
+    img_file_out_name = str(int(time())) + ".jpg"
+    cv2.imwrite('cache/out/' + img_file_out_name, mask_out[y:y + h, x:x + w])
+    return mask_out[y:y + h, x:x + w], img_file_out_name
 
 
 def using_u2net(img):

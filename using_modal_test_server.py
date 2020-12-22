@@ -1,8 +1,7 @@
 import cv2
 import numpy as np
+
 from using_u2net import using_u2net
-from time import time
-from fastapi.responses import StreamingResponse
 
 shape = (128, 128)
 LEN_DATA_RES = 5
@@ -46,8 +45,9 @@ def using(path, my_model, host_name, port):
         for idx, con in enumerate(predict):
             if len(last_res) <= LEN_DATA_RES:
                 name = class_name[idx]
-                last_res.append({'name': name, 'consider': round(float(con), 3) * 100})
-
+                last_res.append({'name': name, 'consider': round(float(con), 3) * 100, 'idx': idx})
+            else:
+                break
         return {
             'data': {
                 'predict': last_res,
